@@ -56,53 +56,55 @@ function App() {
     <div className="container mx-auto my-20">
       <h1 className="text-2xl	font-bold mb-8">Print size calculator</h1>
 
-      <div className="form max-w-md">
-        <PaperSize />
-        <Margin />
-        <Shape />
-        <Gap />
+      <div className="flex gap-8">
+        <div className="form max-w-md">
+          <PaperSize />
+          <Margin />
+          <Shape />
+          <Gap />
 
-        <div className="mb-4 text-right">
-          <button onClick={calculateResult} className="ml-auto inline-block rounded border border-indigo-600 px-10 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500" href="/download">
-            Calculate
-          </button>
+          <div className="mb-4 text-right">
+            <button onClick={calculateResult} className="ml-auto inline-block rounded border border-indigo-600 px-10 py-2 text-sm font-medium text-indigo-600 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring active:bg-indigo-500" href="/download">
+              Calculate
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="mt-10 px-8 py-6 rounded-md border-gray-200 w-full border">
-        <h1 className="text-xl	font-bold mb-8">Result</h1>
-        <div>
-          Paper size: {selectedPaperSize.width} x {selectedPaperSize.height}
-        </div>
-        <div>
-          Printable size: {paperInnerSize.width} x {paperInnerSize.height}
-        </div>
-        <div>Column: {column}</div>
-        <div>Row : {row}</div>
-        <div>Total : {row * column}</div>
+        <div className=" px-8 py-6 rounded-md border-gray-200 w-full border">
+          <h1 className="text-xl	font-bold mb-8">Result</h1>
+          <div>
+            Paper size: {selectedPaperSize.width} x {selectedPaperSize.height}
+          </div>
+          <div>
+            Printable size: {paperInnerSize.width} x {paperInnerSize.height}
+          </div>
+          <div>Column: {column}</div>
+          <div>Row : {row}</div>
+          <div>Total : {row * column}</div>
 
-        <Canvas />
+          <Canvas />
 
-        <div className="my-4 flex">
-          <div
-            style={{
-              width: selectedPaperSize.width + 2,
-              height: selectedPaperSize.height + 2,
-            }}
-            className="border-gray-400 bg-gray-100 border flex"
-          >
+          <div className="my-4 flex">
             <div
               style={{
-                width: paperInnerSize.width + 2,
-                height: paperInnerSize.height + 2,
-                marginTop: formValue.margin.top - 1,
-                marginBottom: formValue.margin.bottom - 1,
-                marginLeft: formValue.margin.left - 1,
-                marginRight: formValue.margin.right - 1,
+                width: selectedPaperSize.width + 2,
+                height: selectedPaperSize.height + 2,
               }}
-              className="border-gray-400 border border-dotted border-collapse"
+              className="border-gray-400 bg-gray-100 border flex"
             >
-              {formValue.shape === 'rectangle' ? <Rectangles total={row * column} width={formValue.width} height={formValue.height} gap={formValue.gap} /> : ''}
+              <div
+                style={{
+                  width: paperInnerSize.width + 2,
+                  height: paperInnerSize.height + 2,
+                  marginTop: formValue.margin.top - 1,
+                  marginBottom: formValue.margin.bottom - 1,
+                  marginLeft: formValue.margin.left - 1,
+                  marginRight: formValue.margin.right - 1,
+                }}
+                className="border-gray-400 border border-dotted border-collapse"
+              >
+                {formValue.shape === 'rectangle' ? <Rectangles total={row * column} width={formValue.width} height={formValue.height} gap={formValue.gap} /> : ''}
+              </div>
             </div>
           </div>
         </div>

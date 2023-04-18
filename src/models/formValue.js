@@ -14,10 +14,12 @@ export const formValue = {
     gap: 5,
   }, // initial state
   reducers: {
+    // handle state changes with pure functions
     update: (state, payload) => {
+      const newState = Object.assign(state, payload);
       return {
         ...state,
-        payload,
+        newState,
       };
     },
   },

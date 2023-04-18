@@ -49,6 +49,7 @@ export const Shape = () => {
       </div>
       {value === 'circle' ? <Diameter /> : ''}
       {value === 'rectangle' ? <WidthHeight /> : ''}
+      {value === 'triangle' ? <WidthHeight /> : ''}
     </div>
   );
 };
