@@ -15,6 +15,8 @@ export const Canvas = () => {
     width: 0,
     height: 0,
   });
+  const [caclculatedColumn, setCalculatedColumn] = useState(0);
+  const [caclculatedRow, setCalculatedRow] = useState(0);
 
   useEffect(() => {
     const selectedSize = paperSizeData.find((el) => el.value === formValue.paperSize);
@@ -27,6 +29,12 @@ export const Canvas = () => {
       height: selectedSize.height - (formValue.margin.top + formValue.margin.bottom),
     });
   }, [formValue]);
+
+  useEffect(() => {
+    const c = document.getElementById('canvas');
+    const ctx = c.getContext('2d');
+    ctx.setTransform(1, 0, 0, 1, 0.5, 0.5);
+  });
 
   useEffect(() => {
     const c = document.getElementById('canvas');
@@ -75,10 +83,14 @@ export const Canvas = () => {
     const totalColumn = Math.floor(paperInnerSize.width / (formValue.width + formValue.gap * 2)) ?? 0;
     const totalRow = Math.floor(paperInnerSize.height / (formValue.height + formValue.gap * 2)) ?? 0;
 
+    setCalculatedColumn(totalColumn);
+    setCalculatedRow(totalRow);
+
     let currentPos = {
       x: formValue.margin.left,
       y: formValue.margin.top,
     };
+
     if (totalRow) {
       Array.from(Array(totalRow), (er, ir) => {
         currentPos.x = formValue.margin.left;
@@ -108,6 +120,9 @@ export const Canvas = () => {
     const totalColumn = Math.floor(paperInnerSize.width / (formValue.diameter + formValue.gap * 2)) ?? 0;
     const totalRow = Math.floor(paperInnerSize.height / (formValue.diameter + formValue.gap * 2)) ?? 0;
 
+    setCalculatedColumn(totalColumn);
+    setCalculatedRow(totalRow);
+
     let currentPos = {
       x: formValue.margin.left,
       y: formValue.margin.top,
@@ -136,13 +151,23 @@ export const Canvas = () => {
       });
     }
   }
+
   function drawTriangles() {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
 
-    console.log('draw rectangle');
-    const totalColumn = Math.floor(paperInnerSize.width / (formValue.width + formValue.gap * 2)) ?? 0;
+    let totalColumn = Math.floor(paperInnerSize.width / (formValue.width * 1 + formValue.gap * 2)) ?? 0;
     const totalRow = Math.floor(paperInnerSize.height / (formValue.height + formValue.gap * 2)) ?? 0;
+
+    if ((formValue.width * 1 + formValue.gap * 2) * totalColumn + (formValue.width + formValue.gap * 2) / 2 > paperInnerSize.width) {
+      totalColumn *= 2;
+      totalColumn -= 1;
+    } else {
+      totalColumn *= 2;
+    }
+
+    setCalculatedColumn(totalColumn);
+    setCalculatedRow(totalRow);
 
     let currentPos = {
       x: formValue.margin.left,
@@ -152,29 +177,53 @@ export const Canvas = () => {
       Array.from(Array(totalRow), (er, ir) => {
         currentPos.x = formValue.margin.left;
         if (totalColumn) {
-          Array.from(Array(totalColumn), (er, ir) => {
-            /* draw object margin */
-            ctx.setLineDash([1, 2]);
-            ctx.strokeRect(currentPos.x, currentPos.y, formValue.width + formValue.gap * 2, formValue.height + formValue.gap * 2);
+          Array.from(Array(totalColumn), (ec, ic) => {
+            if (ic % 2 === 0) {
+              /* draw object margin */
+              ctx.setLineDash([1, 2]);
+              ctx.beginPath();
+              ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y);
+              const pyt = Math.sqrt(Math.pow(formValue.gap, 2) + Math.pow(formValue.gap, 2));
+              // ctx.lineTo(currentPos.x, currentPos.y + formValue.height + pyt);
+              // ctx.lineTo(currentPos.x + formValue.width + pyt * 2, currentPos.y + formValue.height + pyt);
+              ctx.lineTo(currentPos.x, currentPos.y + formValue.height + formValue.gap);
+              ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2, currentPos.y + formValue.height + formValue.gap);
+              ctx.closePath();
+              ctx.stroke();
 
-            /* draw object */
-            ctx.setLineDash([0, 0]);
-            ctx.fillStyle = '#C7D2FE';
-            ctx.beginPath();
-            const topPoint = [currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.gap];
-            const leftPoint = [currentPos.x + formValue.gap, currentPos.y + formValue.height + formValue.gap];
-            const rightPoint = [currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + formValue.gap];
-            console.log(topPoint);
-            console.log(leftPoint);
-            console.log(rightPoint);
-            console.log('------');
-            ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.gap);
-            ctx.lineTo(currentPos.x + formValue.gap, currentPos.y + formValue.height + formValue.gap);
-            ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + formValue.gap);
-            ctx.closePath();
-            ctx.fill();
+              /* draw object */
+              ctx.setLineDash([0, 0]);
+              ctx.fillStyle = '#C7D2FE';
+              ctx.beginPath();
 
-            currentPos.x += formValue.width + formValue.gap * 2;
+              ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.gap);
+              ctx.lineTo(currentPos.x + formValue.gap, currentPos.y + formValue.height + formValue.gap);
+              ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + formValue.gap);
+              ctx.closePath();
+              ctx.fill();
+            } else {
+              ctx.setLineDash([1, 2]);
+              ctx.beginPath();
+              // const startX = currentPos.x - formValue.width / 2 - formValue.gap;
+              ctx.moveTo(currentPos.x, currentPos.y);
+              ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2 + formValue.gap - formValue.gap, currentPos.y);
+              ctx.lineTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.height + formValue.gap);
+              ctx.closePath();
+              ctx.stroke();
+
+              /* draw object */
+              ctx.setLineDash([0, 0]);
+              ctx.fillStyle = '#C7D2FE';
+              ctx.beginPath();
+              ctx.moveTo(currentPos.x + formValue.gap, currentPos.y);
+
+              ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y);
+              ctx.lineTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.height);
+              ctx.closePath();
+              ctx.fill();
+            }
+            // currentPos.x += formValue.width + formValue.gap * 2;
+            currentPos.x += formValue.width / 2 + formValue.gap;
           });
           currentPos.y += formValue.height + formValue.gap * 2;
         }
@@ -184,7 +233,36 @@ export const Canvas = () => {
 
   return (
     <div className="my-4">
-      <div className="block">{formValue.paperSize}</div>
+      <div class="relative overflow-x-auto mb-4">
+        <table className="text-sm text-left">
+          <tr className="border-b border-gray-300">
+            <th className="pr-2 py-2">Paper Size</th>
+            <td className="px-2 py-2">
+              {paperSize.width} x {paperSize.height} mm ({formValue.paperSize})
+            </td>
+          </tr>
+          <tr className="border-b border-gray-300">
+            <th className="pr-2 py-2">Printable size</th>
+            <td className="px-2 py-2">
+              {paperInnerSize.width} x {paperInnerSize.height} mm
+            </td>
+          </tr>
+          <tr className="border-b border-gray-300">
+            <th className="pr-2 py-2">Column</th>
+            <td className="px-2 py-2">{caclculatedColumn}</td>
+          </tr>
+          <tr className="border-b border-gray-300">
+            <th className="pr-2 py-2">Row</th>
+            <td className="px-2 py-2">{caclculatedRow}</td>
+          </tr>
+          <tr className="">
+            <th className="pr-2 py-2">Total</th>
+            <td className="px-2 py-2">{caclculatedColumn * caclculatedRow}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div className="block"></div>
       <canvas id="canvas" width={paperSize.width + 100} height={paperSize.height + 100}>
         Your browser does not support the HTML canvas tag.
       </canvas>

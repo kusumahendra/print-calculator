@@ -56,7 +56,7 @@ function App() {
     <div className="container mx-auto my-20">
       <h1 className="text-2xl	font-bold mb-8">Print size calculator</h1>
 
-      <div className="flex gap-8">
+      <div className="lg:flex gap-8">
         <div className="form max-w-md">
           <PaperSize />
           <Margin />
@@ -72,19 +72,8 @@ function App() {
 
         <div className=" px-8 py-6 rounded-md border-gray-200 w-full border">
           <h1 className="text-xl	font-bold mb-8">Result</h1>
-          <div>
-            Paper size: {selectedPaperSize.width} x {selectedPaperSize.height}
-          </div>
-          <div>
-            Printable size: {paperInnerSize.width} x {paperInnerSize.height}
-          </div>
-          <div>Column: {column}</div>
-          <div>Row : {row}</div>
-          <div>Total : {row * column}</div>
-
           <Canvas />
-
-          <div className="my-4 flex">
+          <div className="my-4 hidden flex">
             <div
               style={{
                 width: selectedPaperSize.width + 2,
