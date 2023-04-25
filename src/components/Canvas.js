@@ -159,9 +159,10 @@ export const Canvas = () => {
   function drawTriangles() {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
+    let yGap = ((formValue.width + formValue.gap * 2) / formValue.width) * formValue.height - formValue.height;
 
     let totalColumn = Math.floor(paperInnerSize.width / (formValue.width * 1 + formValue.gap * 2)) ?? 0;
-    const totalRow = Math.floor(paperInnerSize.height / (formValue.height + formValue.gap * 2)) ?? 0;
+    const totalRow = Math.floor(paperInnerSize.height / (formValue.height + yGap * 2)) ?? 0;
 
     if ((formValue.width * 1 + formValue.gap * 2) * totalColumn + (formValue.width + formValue.gap * 2) / 2 > paperInnerSize.width) {
       totalColumn *= 2;
@@ -183,15 +184,15 @@ export const Canvas = () => {
         if (totalColumn) {
           Array.from(Array(totalColumn), (ec, ic) => {
             if (ic % 2 === 0) {
+              console.log('ygap', yGap);
               /* draw object margin */
               ctx.setLineDash([2, 4]);
               ctx.beginPath();
               ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y);
-              const pyt = Math.sqrt(Math.pow(formValue.gap, 2) + Math.pow(formValue.gap, 2));
               // ctx.lineTo(currentPos.x, currentPos.y + formValue.height + pyt);
-              // ctx.lineTo(currentPos.x + formValue.width + pyt * 2, currentPos.y + formValue.height + pyt);
-              ctx.lineTo(currentPos.x, currentPos.y + formValue.height + formValue.gap);
-              ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2, currentPos.y + formValue.height + formValue.gap);
+              // ctx.lineTo(currentPos.x + formValue.width + pyt * 2ntPos.y + formValue.height + pyt);
+              ctx.lineTo(currentPos.x, currentPos.y + formValue.height + yGap);
+              ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2, currentPos.y + formValue.height + yGap);
               ctx.closePath();
               ctx.stroke();
 
@@ -200,9 +201,9 @@ export const Canvas = () => {
               // ctx.fillStyle = '#C7D2FE';
               ctx.beginPath();
 
-              ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.gap);
-              ctx.lineTo(currentPos.x + formValue.gap, currentPos.y + formValue.height + formValue.gap);
-              ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + formValue.gap);
+              ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + yGap);
+              ctx.lineTo(currentPos.x + formValue.gap, currentPos.y + formValue.height + yGap);
+              ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + yGap);
               ctx.closePath();
               ctx.fill();
             } else {
