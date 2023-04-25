@@ -17,6 +17,14 @@ export const Canvas = () => {
   });
   const [caclculatedColumn, setCalculatedColumn] = useState(0);
   const [caclculatedRow, setCalculatedRow] = useState(0);
+  // const colorObject = '#6c5ce7';
+  const colorObject = '#C7D2FE';
+
+  useEffect(() => {
+    const c = document.getElementById('canvas');
+    const ctx = c.getContext('2d');
+    ctx.setTransform(1, 0, 0, 1, 0.5, 0.5);
+  });
 
   useEffect(() => {
     const selectedSize = paperSizeData.find((el) => el.value === formValue.paperSize);
@@ -33,31 +41,28 @@ export const Canvas = () => {
   useEffect(() => {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
-    ctx.setTransform(1, 0, 0, 1, 0.5, 0.5);
-  });
-
-  useEffect(() => {
-    const c = document.getElementById('canvas');
-    const ctx = c.getContext('2d');
 
     ctx.setLineDash([0, 0]);
     ctx.clearRect(0, 0, c.width + 10, c.height + 10);
-    ctx.fillStyle = '#C7D2FE';
-
+    // ctx.fillStyle = '#C7D2FE';
     ctx.lineWidth = 1;
 
     /* draw paper */
 
     // const paper = new createRectangle(0, 0, paperSize.width, paperSize.height, '#f6f6f6');
 
-    ctx.fillStyle = '#f6f6f6';
+    ctx.fillStyle = '#f9f9f9';
     ctx.strokeStyle = '#999';
     ctx.fillRect(0, 0, paperSize.width, paperSize.height);
     ctx.strokeRect(0, 0, paperSize.width, paperSize.height);
 
     /* draw printable area */
-    ctx.setLineDash([5, 3]);
+    ctx.strokeStyle = '#2DD4F6';
+    ctx.setLineDash([10, 5]);
     ctx.strokeRect(formValue.margin.left, formValue.margin.top, paperInnerSize.width, paperInnerSize.height);
+
+    ctx.strokeStyle = '#999';
+    ctx.fillStyle = colorObject;
 
     switch (formValue.shape) {
       case 'rectangle':
@@ -79,7 +84,6 @@ export const Canvas = () => {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
 
-    console.log('draw rectangle');
     const totalColumn = Math.floor(paperInnerSize.width / (formValue.width + formValue.gap * 2)) ?? 0;
     const totalRow = Math.floor(paperInnerSize.height / (formValue.height + formValue.gap * 2)) ?? 0;
 
@@ -97,12 +101,12 @@ export const Canvas = () => {
         if (totalColumn) {
           Array.from(Array(totalColumn), (er, ir) => {
             /* draw object margin */
-            ctx.setLineDash([1, 2]);
+            ctx.setLineDash([2, 6]);
             ctx.strokeRect(currentPos.x, currentPos.y, formValue.width + formValue.gap * 2, formValue.height + formValue.gap * 2);
 
             /* draw object */
             ctx.setLineDash([0, 0]);
-            ctx.fillStyle = '#C7D2FE';
+            // ctx.fillStyle = '#C7D2FE';
             ctx.fillRect(currentPos.x + formValue.gap, currentPos.y + formValue.gap, formValue.width, formValue.height);
 
             currentPos.x += formValue.width + formValue.gap * 2;
@@ -134,13 +138,13 @@ export const Canvas = () => {
         if (totalColumn) {
           Array.from(Array(totalColumn), (er, ir) => {
             /* draw object margin */
+            ctx.setLineDash([2, 6]);
 
-            ctx.setLineDash([1, 2]);
             ctx.strokeRect(currentPos.x, currentPos.y, formValue.diameter + formValue.gap * 2, formValue.diameter + formValue.gap * 2);
             /* draw object */
             ctx.beginPath();
             ctx.setLineDash([0, 0]);
-            ctx.fillStyle = '#C7D2FE';
+            // ctx.fillStyle = '#C7D2FE';
             ctx.arc(currentPos.x + formValue.gap + formValue.diameter / 2, currentPos.y + formValue.gap + formValue.diameter / 2, formValue.diameter / 2, 0, 2 * Math.PI);
             ctx.fill();
             currentPos.x += formValue.diameter + formValue.gap * 2;
@@ -180,7 +184,7 @@ export const Canvas = () => {
           Array.from(Array(totalColumn), (ec, ic) => {
             if (ic % 2 === 0) {
               /* draw object margin */
-              ctx.setLineDash([1, 2]);
+              ctx.setLineDash([2, 4]);
               ctx.beginPath();
               ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y);
               const pyt = Math.sqrt(Math.pow(formValue.gap, 2) + Math.pow(formValue.gap, 2));
@@ -193,7 +197,7 @@ export const Canvas = () => {
 
               /* draw object */
               ctx.setLineDash([0, 0]);
-              ctx.fillStyle = '#C7D2FE';
+              // ctx.fillStyle = '#C7D2FE';
               ctx.beginPath();
 
               ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.gap);
@@ -202,7 +206,7 @@ export const Canvas = () => {
               ctx.closePath();
               ctx.fill();
             } else {
-              ctx.setLineDash([1, 2]);
+              ctx.setLineDash([1, 4]);
               ctx.beginPath();
               // const startX = currentPos.x - formValue.width / 2 - formValue.gap;
               ctx.moveTo(currentPos.x, currentPos.y);
@@ -213,7 +217,7 @@ export const Canvas = () => {
 
               /* draw object */
               ctx.setLineDash([0, 0]);
-              ctx.fillStyle = '#C7D2FE';
+              // ctx.fillStyle = '#C7D2FE';
               ctx.beginPath();
               ctx.moveTo(currentPos.x + formValue.gap, currentPos.y);
 
@@ -233,32 +237,34 @@ export const Canvas = () => {
 
   return (
     <div className="my-4">
-      <div class="relative overflow-x-auto mb-4">
+      <div className="relative overflow-x-auto mb-4">
         <table className="text-sm text-left">
-          <tr className="border-b border-gray-300">
-            <th className="pr-2 py-2">Paper Size</th>
-            <td className="px-2 py-2">
-              {paperSize.width} x {paperSize.height} mm ({formValue.paperSize})
-            </td>
-          </tr>
-          <tr className="border-b border-gray-300">
-            <th className="pr-2 py-2">Printable size</th>
-            <td className="px-2 py-2">
-              {paperInnerSize.width} x {paperInnerSize.height} mm
-            </td>
-          </tr>
-          <tr className="border-b border-gray-300">
-            <th className="pr-2 py-2">Column</th>
-            <td className="px-2 py-2">{caclculatedColumn}</td>
-          </tr>
-          <tr className="border-b border-gray-300">
-            <th className="pr-2 py-2">Row</th>
-            <td className="px-2 py-2">{caclculatedRow}</td>
-          </tr>
-          <tr className="">
-            <th className="pr-2 py-2">Total</th>
-            <td className="px-2 py-2">{caclculatedColumn * caclculatedRow}</td>
-          </tr>
+          <tbody>
+            <tr className="border-b border-gray-300">
+              <th className="pr-2 py-2">Paper Size</th>
+              <td className="px-2 py-2">
+                {paperSize.width} x {paperSize.height} mm ({formValue.paperSize})
+              </td>
+            </tr>
+            <tr className="border-b border-gray-300">
+              <th className="pr-2 py-2">Printable size</th>
+              <td className="px-2 py-2">
+                {paperInnerSize.width} x {paperInnerSize.height} mm
+              </td>
+            </tr>
+            <tr className="border-b border-gray-300">
+              <th className="pr-2 py-2">Column</th>
+              <td className="px-2 py-2">{caclculatedColumn}</td>
+            </tr>
+            <tr className="border-b border-gray-300">
+              <th className="pr-2 py-2">Row</th>
+              <td className="px-2 py-2">{caclculatedRow}</td>
+            </tr>
+            <tr className="">
+              <th className="pr-2 py-2">Total</th>
+              <td className="px-2 py-2">{caclculatedColumn * caclculatedRow}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
 
