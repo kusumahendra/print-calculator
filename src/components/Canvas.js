@@ -161,7 +161,7 @@ export const Canvas = () => {
     const ctx = c.getContext('2d');
     let yGap = ((formValue.width + formValue.gap * 2) / formValue.width) * formValue.height - formValue.height;
 
-    let totalColumn = Math.floor(paperInnerSize.width / (formValue.width * 1 + formValue.gap * 2)) ?? 0;
+    let totalColumn = Math.floor(paperInnerSize.width / (formValue.width + formValue.gap * 2)) ?? 0;
     const totalRow = Math.floor(paperInnerSize.height / (formValue.height + yGap * 2)) ?? 0;
 
     if ((formValue.width * 1 + formValue.gap * 2) * totalColumn + (formValue.width + formValue.gap * 2) / 2 > paperInnerSize.width) {
@@ -184,7 +184,6 @@ export const Canvas = () => {
         if (totalColumn) {
           Array.from(Array(totalColumn), (ec, ic) => {
             if (ic % 2 === 0) {
-              console.log('ygap', yGap);
               /* draw object margin */
               ctx.setLineDash([2, 4]);
               ctx.beginPath();
@@ -206,13 +205,19 @@ export const Canvas = () => {
               ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + yGap);
               ctx.closePath();
               ctx.fill();
+              // if (ir === totalRow - 1 && ic == 0) {
+              //   console.log('---');
+              //   console.log('top height', currentPos.y);
+              //   console.log('height', formValue.height + yGap);
+              //   console.log('end', currentPos.y + formValue.height + yGap +yGap);
+              // }
             } else {
               ctx.setLineDash([1, 4]);
               ctx.beginPath();
               // const startX = currentPos.x - formValue.width / 2 - formValue.gap;
               ctx.moveTo(currentPos.x, currentPos.y);
               ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2 + formValue.gap - formValue.gap, currentPos.y);
-              ctx.lineTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.height + formValue.gap);
+              ctx.lineTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.height + yGap);
               ctx.closePath();
               ctx.stroke();
 
@@ -230,7 +235,7 @@ export const Canvas = () => {
             // currentPos.x += formValue.width + formValue.gap * 2;
             currentPos.x += formValue.width / 2 + formValue.gap;
           });
-          currentPos.y += formValue.height + formValue.gap * 2;
+          currentPos.y += formValue.height + yGap * 2;
         }
       });
     }
