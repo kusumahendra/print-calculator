@@ -6,6 +6,12 @@ export const paperSize = [
     height: 594,
   },
   {
+    label: 'A3+',
+    value: 'A3+',
+    width: 320,
+    height: 480,
+  },
+  {
     label: 'A3',
     value: 'A3',
     width: 297,
