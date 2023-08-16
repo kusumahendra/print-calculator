@@ -44,6 +44,35 @@ export const Margin = () => {
           <input name="right" onChange={handleChange} value={values.right} type="number" className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
         </div>
       </div>
+
+      {/* <div className="">
+        <div className="flex">
+          <div className="w-24 mx-auto">
+            <label className="block text-xs font-medium text-gray-700">Top</label>
+            <input name="top" onChange={handleChange} value={values.top} type="number" className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
+          </div>
+        </div>
+        <div className="flex items-center">
+          <div className="w-24 mr-auto">
+            <label className="block text-xs font-medium text-gray-700">Left</label>
+            <input name="left" onChange={handleChange} value={values.left} type="number" className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
+          </div>
+
+          <div className="w-24 h-40 border border-slate-200 m-4 max-w-" style={{ paddingTop: '%' }}></div>
+
+          <div className="w-24 ml-auto">
+            <label className="block text-xs font-medium text-gray-700">Right</label>
+            <input name="right" onChange={handleChange} value={values.right} type="number" className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
+          </div>
+        </div>
+
+        <div className="flex">
+          <div className="w-24 mx-auto">
+            <label className="block text-xs font-medium text-gray-700">Bottom</label>
+            <input name="bottom" onChange={handleChange} value={values.bottom} type="number" className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm" />
+          </div>
+        </div>
+      </div> */}
     </div>
   );
 };

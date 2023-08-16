@@ -26,9 +26,9 @@ function App() {
       <h1 className="text-2xl	font-bold mb-8">Print size calculator</h1>
 
       <div className="lg:flex gap-8">
-        <div className="form max-w-md">
+        <div className="form max-w-md w-full">
           <PaperSize />
-          <Margin />
+          {/* <Margin /> */}
           <Shape />
           <Gap />
 

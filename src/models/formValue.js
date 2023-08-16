@@ -2,10 +2,10 @@ export const formValue = {
   state: {
     paperSize: 'A2',
     margin: {
-      top: 40,
-      bottom: 40,
-      left: 20,
-      right: 20,
+      top: 10,
+      bottom: 10,
+      left: 10,
+      right: 10,
     },
     shape: 'rectangle',
     diameter: 30,
