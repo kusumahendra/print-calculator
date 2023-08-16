@@ -14,7 +14,7 @@ export const Gap = () => {
     dispatch.formValue.update({
       gap: value,
     });
-  }, [value]);
+  }, [value, dispatch.formValue]);
 
   return (
     <div className="mb-4">
