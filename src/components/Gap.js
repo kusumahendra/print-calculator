@@ -7,7 +7,7 @@ export const Gap = () => {
   const [value, setValue] = useState(formValue.gap);
 
   const handleChange = (event) => {
-    setValue(parseInt(event.target.value));
+    setValue(parseFloat(event.target.value));
   };
 
   useEffect(() => {

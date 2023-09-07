@@ -8,10 +8,10 @@ export const formValue = {
       right: 10,
     },
     shape: 'rectangle',
-    diameter: 30,
-    width: 50,
-    height: 30,
-    gap: 5,
+    diameter: 3,
+    width: 5,
+    height: 3,
+    gap: 0.5,
   }, // initial state
   reducers: {
     // handle state changes with pure functions

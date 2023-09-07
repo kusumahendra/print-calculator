@@ -83,9 +83,12 @@ export const Canvas = () => {
   function drawRectangles() {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
+    const objWidth = formValue.width * 10;
+    const objHeight = formValue.height * 10;
+    const objGap = formValue.gap * 10;
 
-    const totalColumn = Math.floor(paperInnerSize.width / (formValue.width + formValue.gap * 2)) ?? 0;
-    const totalRow = Math.floor(paperInnerSize.height / (formValue.height + formValue.gap * 2)) ?? 0;
+    const totalColumn = Math.floor(paperInnerSize.width / (objWidth + objGap * 2)) ?? 0;
+    const totalRow = Math.floor(paperInnerSize.height / (objHeight + objGap * 2)) ?? 0;
 
     setCalculatedColumn(totalColumn);
     setCalculatedRow(totalRow);
@@ -102,16 +105,16 @@ export const Canvas = () => {
           Array.from(Array(totalColumn), (er, ir) => {
             /* draw object margin */
             ctx.setLineDash([2, 6]);
-            ctx.strokeRect(currentPos.x, currentPos.y, formValue.width + formValue.gap * 2, formValue.height + formValue.gap * 2);
+            ctx.strokeRect(currentPos.x, currentPos.y, objWidth + objGap * 2, objHeight + objGap * 2);
 
             /* draw object */
             ctx.setLineDash([0, 0]);
             // ctx.fillStyle = '#C7D2FE';
-            ctx.fillRect(currentPos.x + formValue.gap, currentPos.y + formValue.gap, formValue.width, formValue.height);
+            ctx.fillRect(currentPos.x + objGap, currentPos.y + objGap, objWidth, objHeight);
 
-            currentPos.x += formValue.width + formValue.gap * 2;
+            currentPos.x += objWidth + objGap * 2;
           });
-          currentPos.y += formValue.height + formValue.gap * 2;
+          currentPos.y += objHeight + objGap * 2;
         }
       });
     }
@@ -121,8 +124,11 @@ export const Canvas = () => {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
     console.log('draw circles');
-    const totalColumn = Math.floor(paperInnerSize.width / (formValue.diameter + formValue.gap * 2)) ?? 0;
-    const totalRow = Math.floor(paperInnerSize.height / (formValue.diameter + formValue.gap * 2)) ?? 0;
+    const objDiameter = formValue.diameter * 10;
+    const objGap = formValue.gap * 10;
+
+    const totalColumn = Math.floor(paperInnerSize.width / (objDiameter + objGap * 2)) ?? 0;
+    const totalRow = Math.floor(paperInnerSize.height / (objDiameter + objGap * 2)) ?? 0;
 
     setCalculatedColumn(totalColumn);
     setCalculatedRow(totalRow);
@@ -140,17 +146,17 @@ export const Canvas = () => {
             /* draw object margin */
             ctx.setLineDash([2, 6]);
 
-            ctx.strokeRect(currentPos.x, currentPos.y, formValue.diameter + formValue.gap * 2, formValue.diameter + formValue.gap * 2);
+            ctx.strokeRect(currentPos.x, currentPos.y, objDiameter + objGap * 2, objDiameter + objGap * 2);
             /* draw object */
             ctx.beginPath();
             ctx.setLineDash([0, 0]);
             // ctx.fillStyle = '#C7D2FE';
-            ctx.arc(currentPos.x + formValue.gap + formValue.diameter / 2, currentPos.y + formValue.gap + formValue.diameter / 2, formValue.diameter / 2, 0, 2 * Math.PI);
+            ctx.arc(currentPos.x + objGap + objDiameter / 2, currentPos.y + objGap + objDiameter / 2, objDiameter / 2, 0, 2 * Math.PI);
             ctx.fill();
-            currentPos.x += formValue.diameter + formValue.gap * 2;
+            currentPos.x += objDiameter + objGap * 2;
           });
 
-          currentPos.y += formValue.diameter + formValue.gap * 2;
+          currentPos.y += objDiameter + objGap * 2;
         }
       });
     }
@@ -159,12 +165,16 @@ export const Canvas = () => {
   function drawTriangles() {
     const c = document.getElementById('canvas');
     const ctx = c.getContext('2d');
-    let yGap = ((formValue.width + formValue.gap * 2) / formValue.width) * formValue.height - formValue.height;
+    const objWidth = formValue.width * 10;
+    const objHeight = formValue.height * 10;
+    const objGap = formValue.gap * 10;
 
-    let totalColumn = Math.floor(paperInnerSize.width / (formValue.width + formValue.gap * 2)) ?? 0;
-    const totalRow = Math.floor(paperInnerSize.height / (formValue.height + yGap * 2)) ?? 0;
+    let yGap = ((objWidth + objGap * 2) / objWidth) * objHeight - objHeight;
 
-    if ((formValue.width * 1 + formValue.gap * 2) * totalColumn + (formValue.width + formValue.gap * 2) / 2 > paperInnerSize.width) {
+    let totalColumn = Math.floor(paperInnerSize.width / (objWidth + objGap * 2)) ?? 0;
+    const totalRow = Math.floor(paperInnerSize.height / (objHeight + yGap * 2)) ?? 0;
+
+    if ((objWidth * 1 + objGap * 2) * totalColumn + (objWidth + objGap * 2) / 2 > paperInnerSize.width) {
       totalColumn *= 2;
       totalColumn -= 1;
     } else {
@@ -187,11 +197,11 @@ export const Canvas = () => {
               /* draw object margin */
               ctx.setLineDash([2, 4]);
               ctx.beginPath();
-              ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y);
-              // ctx.lineTo(currentPos.x, currentPos.y + formValue.height + pyt);
-              // ctx.lineTo(currentPos.x + formValue.width + pyt * 2ntPos.y + formValue.height + pyt);
-              ctx.lineTo(currentPos.x, currentPos.y + formValue.height + yGap);
-              ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2, currentPos.y + formValue.height + yGap);
+              ctx.moveTo(currentPos.x + objWidth / 2 + objGap, currentPos.y);
+              // ctx.lineTo(currentPos.x, currentPos.y + objHeight + pyt);
+              // ctx.lineTo(currentPos.x + objWidth + pyt * 2ntPos.y + objHeight + pyt);
+              ctx.lineTo(currentPos.x, currentPos.y + objHeight + yGap);
+              ctx.lineTo(currentPos.x + objWidth + objGap * 2, currentPos.y + objHeight + yGap);
               ctx.closePath();
               ctx.stroke();
 
@@ -200,24 +210,24 @@ export const Canvas = () => {
               // ctx.fillStyle = '#C7D2FE';
               ctx.beginPath();
 
-              ctx.moveTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + yGap);
-              ctx.lineTo(currentPos.x + formValue.gap, currentPos.y + formValue.height + yGap);
-              ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y + formValue.height + yGap);
+              ctx.moveTo(currentPos.x + objWidth / 2 + objGap, currentPos.y + yGap);
+              ctx.lineTo(currentPos.x + objGap, currentPos.y + objHeight + yGap);
+              ctx.lineTo(currentPos.x + objWidth + objGap, currentPos.y + objHeight + yGap);
               ctx.closePath();
               ctx.fill();
               // if (ir === totalRow - 1 && ic == 0) {
               //   console.log('---');
               //   console.log('top height', currentPos.y);
-              //   console.log('height', formValue.height + yGap);
-              //   console.log('end', currentPos.y + formValue.height + yGap +yGap);
+              //   console.log('height', objHeight + yGap);
+              //   console.log('end', currentPos.y + objHeight + yGap +yGap);
               // }
             } else {
               ctx.setLineDash([1, 4]);
               ctx.beginPath();
-              // const startX = currentPos.x - formValue.width / 2 - formValue.gap;
+              // const startX = currentPos.x - objWidth / 2 - objGap;
               ctx.moveTo(currentPos.x, currentPos.y);
-              ctx.lineTo(currentPos.x + formValue.width + formValue.gap * 2 + formValue.gap - formValue.gap, currentPos.y);
-              ctx.lineTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.height + yGap);
+              ctx.lineTo(currentPos.x + objWidth + objGap * 2 + objGap - objGap, currentPos.y);
+              ctx.lineTo(currentPos.x + objWidth / 2 + objGap, currentPos.y + objHeight + yGap);
               ctx.closePath();
               ctx.stroke();
 
@@ -225,17 +235,17 @@ export const Canvas = () => {
               ctx.setLineDash([0, 0]);
               // ctx.fillStyle = '#C7D2FE';
               ctx.beginPath();
-              ctx.moveTo(currentPos.x + formValue.gap, currentPos.y);
+              ctx.moveTo(currentPos.x + objGap, currentPos.y);
 
-              ctx.lineTo(currentPos.x + formValue.width + formValue.gap, currentPos.y);
-              ctx.lineTo(currentPos.x + formValue.width / 2 + formValue.gap, currentPos.y + formValue.height);
+              ctx.lineTo(currentPos.x + objWidth + objGap, currentPos.y);
+              ctx.lineTo(currentPos.x + objWidth / 2 + objGap, currentPos.y + objHeight);
               ctx.closePath();
               ctx.fill();
             }
-            // currentPos.x += formValue.width + formValue.gap * 2;
-            currentPos.x += formValue.width / 2 + formValue.gap;
+            // currentPos.x += objWidth + objGap * 2;
+            currentPos.x += objWidth / 2 + objGap;
           });
-          currentPos.y += formValue.height + yGap * 2;
+          currentPos.y += objHeight + yGap * 2;
         }
       });
     }
