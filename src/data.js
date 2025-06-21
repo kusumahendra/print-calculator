@@ -29,10 +29,16 @@ export const paperSize = [
     width: 148,
     height: 210,
   },
+  // {
+  //   label: '275 x 435 mm',
+  //   value: '275x435',
+  //   width: 275,
+  //   height: 435,
+  // },
   {
-    label: '275 x 435 mm',
-    value: '275x435',
-    width: 275,
-    height: 435,
+    label: 'Kiss Cut / Die cut',
+    value: 'kiss-cut',
+    width: 295,
+    height: 455,
   },
 ];
